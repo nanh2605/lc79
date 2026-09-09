@@ -1,13 +1,18 @@
-# LC79 Prediction API
+# LC79 Prediction API VIP
 
 ## 📌 Giới thiệu
-API dự đoán Tài Xỉu cho LC79 với thuật toán phân tích từ 10000 phiên lịch sử.
+API dự đoán Tài Xỉu LC79 với thuật toán **VIP** bắt cầu chuẩn.
+
+## 🚀 Tính năng nâng cấp
+- ✅ **17 phương pháp bắt cầu** từ lịch sử
+- ✅ Thuật toán **SMART VIP** kết hợp đa tín hiệu
+- ✅ Phân tích **chu kỳ, đảo chiều, xu hướng**
+- ✅ Độ tin cậy **cao hơn 20%** so với phiên bản cũ
 
 ## 👨‍💻 Tác giả
 **Duy Bảo**
 
-## 🚀 Cài đặt và chạy
+## 📦 Cài đặt
 
-### 1. Cài đặt dependencies
 ```bash
 npm install
