@@ -1,7 +1,7 @@
 {
-  "name": "lc79-prediction-api",
-  "version": "1.0.0",
-  "description": "API dự đoán Tài Xỉu LC79 - MD5 & Hũ",
+  "name": "lc79-prediction-api-vip",
+  "version": "2.0.0",
+  "description": "API dự đoán Tài Xỉu LC79 VIP - Bắt cầu chuẩn từ Max789",
   "main": "lc79.js",
   "type": "module",
   "scripts": {
