@@ -1,19 +1,20 @@
 {
-  "name": "max789-prediction-api",
+  "name": "lc79-prediction-api",
   "version": "1.0.0",
-  "description": "Dự đoán Tài Xỉu Max789 - MD5 & Hũ",
-  "main": "max789.js",
+  "description": "API dự đoán Tài Xỉu LC79 - MD5 & Hũ",
+  "main": "lc79.js",
   "type": "module",
   "scripts": {
-    "start": "node max789.js",
-    "dev": "node max789.js"
+    "start": "node lc79.js",
+    "dev": "node lc79.js"
   },
   "dependencies": {
     "fastify": "^4.28.0",
-    "@fastify/cors": "^9.0.1",
-    "node-fetch": "^3.3.2"
+    "@fastify/cors": "^9.0.1"
   },
   "engines": {
     "node": ">=16.0.0"
-  }
+  },
+  "author": "Duy Bảo",
+  "license": "MIT"
 }
