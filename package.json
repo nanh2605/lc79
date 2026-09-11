@@ -1,7 +1,7 @@
 {
-  "name": "lc79-prediction-api-vip",
-  "version": "3.0.0",
-  "description": "API dự đoán Tài Xỉu LC79 VIP - 38 thuật toán bắt cầu siêu VIP",
+  "name": "lc79-prediction-api-super-vip",
+  "version": "4.0.0",
+  "description": "API dự đoán Tài Xỉu LC79 SUPER VIP - 50+ thuật toán bắt cầu siêu VIP",
   "main": "lc79.js",
   "type": "module",
   "scripts": {
