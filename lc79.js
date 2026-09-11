@@ -1,6 +1,6 @@
 // ============================================================
-// lc79.js - API DỰ ĐOÁN TÀI XỈU LC79 VIP
-// Thuật toán bắt cầu siêu VIP từ phân tích 10000 phiên
+// lc79.js - API DỰ ĐOÁN TÀI XỈU LC79 SUPER VIP
+// 50+ Thuật toán bắt cầu siêu VIP
 // Author: Duy Bảo
 // ============================================================
 
@@ -46,17 +46,15 @@ function parseData(list) {
 }
 
 // ============================================================
-// THUẬT TOÁN PHÂN TÍCH NÂNG CAO VIP
+// HÀM HỖ TRỢ
 // ============================================================
 
-// Đếm số lần xuất hiện
 function countIn(arr, val, n) {
     let c = 0, m = Math.min(n || arr.length, arr.length);
     for (let i = 0; i < m; i++) if (arr[i] === val) c++;
     return c;
 }
 
-// Đếm độ dài chuỗi lặp
 function streak(arr) {
     if (!arr.length) return 0;
     let s = 1;
@@ -67,18 +65,15 @@ function streak(arr) {
     return s;
 }
 
-// Bayes Probability
 function bayesP(a, b) {
     return (a + 1) / (b + 2);
 }
 
-// Trung bình
 function average(nums) {
     if (!nums.length) return 0;
     return nums.reduce((a, b) => a + b, 0) / nums.length;
 }
 
-// Độ lệch chuẩn
 function stddev(nums) {
     if (nums.length < 2) return 0;
     let mean = average(nums);
@@ -86,7 +81,6 @@ function stddev(nums) {
     return Math.sqrt(variance);
 }
 
-// Entropy
 function entropy(arr) {
     if (!arr.length) return 0;
     let freq = {};
@@ -99,21 +93,43 @@ function entropy(arr) {
     return e;
 }
 
-// Sigmoid
 function sigmoid(x) {
     return 1 / (1 + Math.exp(-x));
 }
 
-// Tanh
 function tanh(x) {
     return Math.tanh(x);
 }
 
 // ============================================================
-// 30+ THUẬT TOÁN BẮT CẦU VIP
+// PATTERN DATABASE TỪ FILE MẪU
 // ============================================================
 
-// 1. Cầu 11 - Đảo chiều sau 1 phiên
+const PATTERN_DB = {
+  'tttt':     { t: 73, x: 27 }, 'xxxx':     { t: 27, x: 73 },
+  'tttttt':   { t: 83, x: 17 }, 'xxxxxx':   { t: 17, x: 83 },
+  'ttttx':    { t: 40, x: 60 }, 'xxxxt':    { t: 60, x: 40 },
+  'ttttttx':  { t: 30, x: 70 }, 'xxxxxxt':  { t: 70, x: 30 },
+  'ttxx':     { t: 62, x: 38 }, 'xxtt':     { t: 38, x: 62 },
+  'txx':      { t: 60, x: 40 }, 'xtt':      { t: 40, x: 60 },
+  'ttx':      { t: 65, x: 35 }, 'xxt':      { t: 35, x: 65 },
+  'txt':      { t: 58, x: 42 }, 'xtx':      { t: 42, x: 58 },
+  'tttx':     { t: 70, x: 30 }, 'xxxt':     { t: 30, x: 70 },
+  'ttxt':     { t: 63, x: 37 }, 'xxtx':     { t: 37, x: 63 },
+  'txxx':     { t: 25, x: 75 }, 'xttt':     { t: 75, x: 25 },
+  'ttxtx':    { t: 62, x: 38 }, 'xxtxt':    { t: 38, x: 62 },
+  'ttxxt':    { t: 55, x: 45 }, 'xxttx':    { t: 45, x: 55 },
+  'txtx':     { t: 52, x: 48 }, 'xtxt':     { t: 48, x: 52 },
+  'txtxt':    { t: 53, x: 47 }, 'xtxtx':    { t: 47, x: 53 },
+  'txtxtxt':  { t: 57, x: 43 }, 'xtxtxtx':  { t: 43, x: 57 },
+};
+
+// ============================================================
+// 50+ THUẬT TOÁN VIP
+// ============================================================
+
+// --- NHÓM 1: CẦU CƠ BẢN ---
+
 function cau11(h) {
     let n = Math.min(h.length, 200);
     if (n < 6) return null;
@@ -123,22 +139,21 @@ function cau11(h) {
     if (altRate < 0.6) return null;
     let lastRun = 1;
     for (let i = 1; i < Math.min(n, 20); i++) { if (h[i] === h[i - 1]) lastRun++; else break; }
-    if (lastRun >= 4) return { p: h[0] === 'T' ? 0.42 : 0.58 };
+    if (lastRun >= 4) return { p: h[0] === 'T' ? 0.42 : 0.58, name: 'Cầu 11' };
     if (lastRun === 1 && n >= 3) {
         if (h[0] !== h[1] && h[1] !== h[2]) {
             let pred = h[2] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.55 : 0.45 };
+            return { p: pred === 'T' ? 0.55 : 0.45, name: 'Cầu 11' };
         }
         if (h[0] !== h[1]) {
             let pred = h[1] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.53 : 0.47 };
+            return { p: pred === 'T' ? 0.53 : 0.47, name: 'Cầu 11' };
         }
         return null;
     }
     return null;
 }
 
-// 2. Cầu 3 nhịp
 function cau3Nhip(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -147,20 +162,19 @@ function cau3Nhip(h) {
         if (a[0] !== a[1] && a[1] === a[2] && a[2] !== a[3]) {
             if (n >= i + 7) {
                 let pred = a[3] === 'T' ? 'X' : 'T';
-                return { p: pred === 'T' ? 0.6 : 0.4 };
+                return { p: pred === 'T' ? 0.6 : 0.4, name: 'Cầu 3 nhịp' };
             }
         }
         if (a[0] === a[1] && a[1] === a[2] && a[2] !== a[3] && a[3] === a[4] && a[4] !== a[5]) {
             if (n >= i + 7) {
                 let pred = a[5] === 'T' ? 'X' : 'T';
-                return { p: pred === 'T' ? 0.58 : 0.42 };
+                return { p: pred === 'T' ? 0.58 : 0.42, name: 'Cầu 3 nhịp' };
             }
         }
     }
     return null;
 }
 
-// 3. Cầu đảo
 function cauDao(h) {
     let n = Math.min(h.length, 200);
     if (n < 6) return null;
@@ -178,28 +192,26 @@ function cauDao(h) {
     if (revTotal < 2) return null;
     let revRate = revCount / revTotal;
     let prob = curV === 'T' ? (0.5 - revRate * 0.3) : (0.5 + revRate * 0.3);
-    return { p: Math.min(Math.max(prob, 0.01), 0.99) };
+    return { p: Math.min(Math.max(prob, 0.01), 0.99), name: 'Cầu đảo' };
 }
 
-// 4. Cầu tổng
 function cauTong(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
     let tC = countIn(h, 'T', n);
     let tR = tC / n;
-    if (tR > 0.6) return { p: Math.min(tR + 0.05, 0.88) };
-    if (tR < 0.4) return { p: Math.min(1 - tR + 0.05, 0.88) };
+    if (tR > 0.6) return { p: Math.min(tR + 0.05, 0.88), name: 'Cầu tổng' };
+    if (tR < 0.4) return { p: Math.min(1 - tR + 0.05, 0.88), name: 'Cầu tổng' };
     let recent = countIn(h, 'T', Math.min(10, n)) / Math.min(10, n);
     let recentBias = countIn(h, 'T', Math.min(15, n)) / Math.min(15, n);
     let diff = recentBias - tR;
     if (Math.abs(diff) > 0.1) {
         let prob = recentBias + diff * 0.3;
-        return { p: Math.min(Math.max(prob, 0.01), 0.99) };
+        return { p: Math.min(Math.max(prob, 0.01), 0.99), name: 'Cầu tổng' };
     }
     return null;
 }
 
-// 5. Cầu rồng hổ
 function cauRongHo(h) {
     let n = Math.min(h.length, 200);
     if (n < 6) return null;
@@ -208,16 +220,15 @@ function cauRongHo(h) {
     let curV = h[0];
     if (curS >= 5) {
         let tC = countIn(h, 'T', n) / n;
-        if (curV === 'T' && tC > 0.55) return { p: Math.min(tC + 0.1, 0.92) };
-        if (curV === 'X' && tC < 0.45) return { p: Math.min(1 - tC + 0.1, 0.92) };
+        if (curV === 'T' && tC > 0.55) return { p: Math.min(tC + 0.1, 0.92), name: 'Cầu rồng hổ' };
+        if (curV === 'X' && tC < 0.45) return { p: Math.min(1 - tC + 0.1, 0.92), name: 'Cầu rồng hổ' };
     }
     if (curS >= 3) {
-        return { p: curV === 'T' ? 0.58 : 0.42 };
+        return { p: curV === 'T' ? 0.58 : 0.42, name: 'Cầu rồng hổ' };
     }
     return null;
 }
 
-// 6. Cầu 12
 function cau12(h) {
     let n = Math.min(h.length, 200);
     if (n < 6) return null;
@@ -236,10 +247,9 @@ function cau12(h) {
     }
     if (!p.length) return null;
     let best = p.reduce((a, b) => a.conf > b.conf ? a : b);
-    return { p: best.pred === 'T' ? best.conf : 1 - best.conf };
+    return { p: best.pred === 'T' ? best.conf : 1 - best.conf, name: 'Cầu 12' };
 }
 
-// 7. Cầu 212
 function cau212(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -247,17 +257,16 @@ function cau212(h) {
         let pat = h.slice(i, i + 8);
         if (pat[0] === pat[2] && pat[2] !== pat[1] && pat[3] === pat[5] && pat[5] !== pat[4] && pat[6] === pat[7]) {
             let pred = pat[7] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.58 : 0.42 };
+            return { p: pred === 'T' ? 0.58 : 0.42, name: 'Cầu 212' };
         }
         if (pat[0] !== pat[1] && pat[1] === pat[2] && pat[2] !== pat[3] && pat[3] !== pat[4] && pat[4] === pat[5] && pat[5] !== pat[6] && pat[6] !== pat[7]) {
             let pred = pat[7] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.56 : 0.44 };
+            return { p: pred === 'T' ? 0.56 : 0.44, name: 'Cầu 212' };
         }
     }
     return null;
 }
 
-// 8. Cầu 33
 function cau33(h) {
     let n = Math.min(h.length, 200);
     if (n < 9) return null;
@@ -268,17 +277,16 @@ function cau33(h) {
         let r3 = pat[6] === pat[7] && pat[7] === pat[8];
         if (r1 && r2 && r3 && pat[0] !== pat[3] && pat[3] !== pat[6]) {
             let pred = pat[8] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.6 : 0.4 };
+            return { p: pred === 'T' ? 0.6 : 0.4, name: 'Cầu 33' };
         }
         if (r1 && r2 && pat[0] !== pat[3] && pat[3] !== pat[6] && pat[6] === pat[7] && pat[7] === pat[8]) {
             let pred = pat[8] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.57 : 0.43 };
+            return { p: pred === 'T' ? 0.57 : 0.43, name: 'Cầu 33' };
         }
     }
     return null;
 }
 
-// 9. Cầu 42
 function cau42(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -286,17 +294,16 @@ function cau42(h) {
         let pat = h.slice(i, i + 8);
         if (pat[0] === pat[1] && pat[1] === pat[2] && pat[2] === pat[3] && pat[4] !== pat[5] && pat[5] === pat[6] && pat[6] === pat[7]) {
             let pred = pat[7] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.62 : 0.38 };
+            return { p: pred === 'T' ? 0.62 : 0.38, name: 'Cầu 42' };
         }
         if (pat[0] === pat[1] && pat[1] === pat[2] && pat[2] === pat[3] && pat[3] !== pat[4] && pat[4] === pat[5] && pat[5] === pat[6] && pat[6] === pat[7]) {
             let pred = pat[7] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.65 : 0.35 };
+            return { p: pred === 'T' ? 0.65 : 0.35, name: 'Cầu 42' };
         }
     }
     return null;
 }
 
-// 10. Cầu đảo 1122
 function cauDao1122(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
@@ -304,7 +311,7 @@ function cauDao1122(h) {
         let pat = h.slice(i, i + 9);
         if (pat[0] !== pat[1] && pat[1] !== pat[2] && pat[2] === pat[3] && pat[3] === pat[4] && pat[4] !== pat[5] && pat[5] !== pat[6] && pat[6] === pat[7] && pat[7] === pat[8]) {
             let pred = pat[8] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.55 : 0.45 };
+            return { p: pred === 'T' ? 0.55 : 0.45, name: 'Cầu đảo 1122' };
         }
     }
     let curS = 1;
@@ -319,16 +326,15 @@ function cauDao1122(h) {
         }
         if (totalAfter >= 2) {
             let pRev = afterStream / totalAfter;
-            return { p: curV === 'T' ? 0.5 - pRev * 0.3 : 0.5 + pRev * 0.3 };
+            return { p: curV === 'T' ? 0.5 - pRev * 0.3 : 0.5 + pRev * 0.3, name: 'Cầu đảo 1122' };
         }
     }
     return null;
 }
 
-// 11. Cầu gãy
 function cauGay(h) {
     let n = Math.min(h.length, 200);
-    if (n < 6) return 0.5;
+    if (n < 6) return null;
     let curS = 1;
     for (let i = 1; i < n; i++) { if (h[i] === h[i - 1]) curS++; else break; }
     let curV = h[0];
@@ -346,7 +352,7 @@ function cauGay(h) {
         if (totalBreak >= 2) {
             let breakRate = breakContinue / totalBreak;
             if (breakRate > 0.6) {
-                return curV === 'T' ? Math.min(0.55 + breakRate * 0.15, 0.85) : Math.min(0.55 + (1 - breakRate) * 0.15, 0.85);
+                return { p: curV === 'T' ? Math.min(0.55 + breakRate * 0.15, 0.85) : Math.min(0.55 + (1 - breakRate) * 0.15, 0.85), name: 'Cầu gãy' };
             }
         }
     }
@@ -355,13 +361,12 @@ function cauGay(h) {
         let alt = 0;
         for (let i = 1; i < recent5.length; i++) if (recent5[i] !== recent5[i - 1]) alt++;
         if (alt >= 2) {
-            return curV === 'T' ? 0.55 : 0.45;
+            return { p: curV === 'T' ? 0.55 : 0.45, name: 'Cầu gãy' };
         }
     }
-    return 0.5;
+    return null;
 }
 
-// 12. Cầu thông
 function cauThong(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -379,10 +384,9 @@ function cauThong(h) {
     if (total < 2) return null;
     let contRate = match / total;
     let prob = curV === 'T' ? 0.5 + (contRate - 0.5) * 0.4 : 0.5 - (contRate - 0.5) * 0.4;
-    return { p: Math.min(Math.max(prob, 0.01), 0.99) };
+    return { p: Math.min(Math.max(prob, 0.01), 0.99), name: 'Cầu thông' };
 }
 
-// 13. Cầu 2 nhịp
 function cau2Nhip(h) {
     let n = Math.min(h.length, 200);
     if (n < 6) return null;
@@ -392,18 +396,17 @@ function cau2Nhip(h) {
         if (pat[0] === pat[1] && pat[2] === pat[3] && pat[4] === pat[5] && pat[0] !== pat[2] && pat[2] !== pat[4]) {
             let pred = pat[5] === 'T' ? 'X' : 'T';
             let pPred = pred === 'T' ? 0.6 : 0.4;
-            if (!best || pPred > Math.abs(best.p - 0.5)) best = { p: pPred };
+            if (!best || pPred > Math.abs(best.p - 0.5)) best = { p: pPred, name: 'Cầu 2 nhịp' };
         }
         if (pat[0] !== pat[1] && pat[2] !== pat[3] && pat[4] !== pat[5] && pat[0] === pat[2] && pat[2] === pat[4]) {
             let pred = pat[5] === 'T' ? 'X' : 'T';
             let pPred = pred === 'T' ? 0.58 : 0.42;
-            if (!best || pPred > Math.abs(best.p - 0.5)) best = { p: pPred };
+            if (!best || pPred > Math.abs(best.p - 0.5)) best = { p: pPred, name: 'Cầu 2 nhịp' };
         }
     }
-    return best || null;
+    return best;
 }
 
-// 14. Cầu 4 nhịp
 function cau4Nhip(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
@@ -411,13 +414,12 @@ function cau4Nhip(h) {
         let pat = h.slice(i, i + 10);
         if (pat[0] !== pat[1] && pat[1] === pat[2] && pat[2] !== pat[3] && pat[3] !== pat[4] && pat[4] === pat[5] && pat[5] !== pat[6] && pat[6] !== pat[7] && pat[7] === pat[8] && pat[8] !== pat[9]) {
             let pred = pat[9] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.54 : 0.46 };
+            return { p: pred === 'T' ? 0.54 : 0.46, name: 'Cầu 4 nhịp' };
         }
     }
     return null;
 }
 
-// 15. Cầu 3_2
 function cau3_2(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
@@ -428,7 +430,7 @@ function cau3_2(h) {
         let r3 = pat[5] === pat[6] && pat[6] === pat[7];
         let r4 = pat[8] === pat[9];
         if (r1 && r2 && pat[0] !== pat[3] && pat[3] === pat[4] && pat[4] !== pat[5] && r3 && pat[5] !== pat[8] && r4) {
-            return { p: pat[9] === 'T' ? 0.58 : 0.42 };
+            return { p: pat[9] === 'T' ? 0.58 : 0.42, name: 'Cầu 3_2' };
         }
     }
     let curS = 1;
@@ -441,7 +443,7 @@ function cau3_2(h) {
         }
         if (total32 >= 2) {
             let rate = after32 / total32;
-            return { p: curV === 'T' ? 0.5 + rate * 0.15 : 0.5 - rate * 0.15 };
+            return { p: curV === 'T' ? 0.5 + rate * 0.15 : 0.5 - rate * 0.15, name: 'Cầu 3_2' };
         }
     }
     if (curS === 2) {
@@ -451,13 +453,12 @@ function cau3_2(h) {
         }
         if (total23 >= 2) {
             let rate = after23 / total23;
-            return { p: curV === 'T' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12 };
+            return { p: curV === 'T' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12, name: 'Cầu 3_2' };
         }
     }
     return null;
 }
 
-// 16. Cầu 1_2_3
 function cau1_2_3(h) {
     let n = Math.min(h.length, 200);
     if (n < 12) return null;
@@ -465,7 +466,7 @@ function cau1_2_3(h) {
         let pat = h.slice(i, i + 12);
         if (pat[0] !== pat[1] && pat[1] === pat[2] && pat[2] !== pat[3] && pat[3] === pat[4] && pat[4] === pat[5] && pat[5] !== pat[6] && pat[6] === pat[7] && pat[7] === pat[8] && pat[8] === pat[9]) {
             let pred = pat[9] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.6 : 0.4 };
+            return { p: pred === 'T' ? 0.6 : 0.4, name: 'Cầu 1_2_3' };
         }
     }
     let curS = 1;
@@ -482,13 +483,12 @@ function cau1_2_3(h) {
             if (streamLens.length >= 3) break;
         }
         if (streamLens.length >= 3 && streamLens[0] < streamLens[1] && streamLens[1] < streamLens[2]) {
-            return { p: curV === 'T' ? 0.46 : 0.54 };
+            return { p: curV === 'T' ? 0.46 : 0.54, name: 'Cầu 1_2_3' };
         }
     }
     return null;
 }
 
-// 17. Cầu bậc
 function cauBac(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
@@ -508,10 +508,9 @@ function cauBac(h) {
     if (totalBac < 2) return null;
     let bacRate = sameBac / totalBac;
     let prob = curV === 'T' ? 0.5 - bacRate * 0.25 : 0.5 + bacRate * 0.25;
-    return { p: Math.min(Math.max(prob, 0.01), 0.99) };
+    return { p: Math.min(Math.max(prob, 0.01), 0.99), name: 'Cầu bậc' };
 }
 
-// 18. Cầu 112
 function cau112(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -529,10 +528,9 @@ function cau112(h) {
     }
     if (total112 < 2) return null;
     let rate = match112 / total112;
-    return { p: curV === 'T' ? 0.5 + rate * 0.15 : 0.5 - rate * 0.15 };
+    return { p: curV === 'T' ? 0.5 + rate * 0.15 : 0.5 - rate * 0.15, name: 'Cầu 112' };
 }
 
-// 19. Cầu 221
 function cau221(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -550,10 +548,9 @@ function cau221(h) {
     }
     if (total221 < 2) return null;
     let rate = match221 / total221;
-    return { p: curV === 'T' ? 0.5 - rate * 0.15 : 0.5 + rate * 0.15 };
+    return { p: curV === 'T' ? 0.5 - rate * 0.15 : 0.5 + rate * 0.15, name: 'Cầu 221' };
 }
 
-// 20. Cầu đảo 22
 function cauDao22(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -570,11 +567,10 @@ function cauDao22(h) {
     let rate = match22 / total22;
     let lastP = h.slice(0, 4).join('');
     let isTX = lastP === 'TTXX' || lastP === 'XXTT';
-    if (!isTX) return { p: 0.5 };
-    return { p: h[0] === 'T' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12 };
+    if (!isTX) return { p: 0.5, name: 'Cầu đảo 22' };
+    return { p: h[0] === 'T' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12, name: 'Cầu đảo 22' };
 }
 
-// 21. Cầu chạm
 function cauCham(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -591,28 +587,26 @@ function cauCham(h) {
     }
     if (chamCount < 3) return null;
     let rate = matchCham / (chamCount || 1);
-    return { p: curV === 'T' ? 0.5 + rate * 0.15 : 0.5 - rate * 0.15 };
+    return { p: curV === 'T' ? 0.5 + rate * 0.15 : 0.5 - rate * 0.15, name: 'Cầu chạm' };
 }
 
-// 22. Cầu kép
 function cauKep(h) {
     let n = Math.min(h.length, 200);
     if (n < 6) return null;
     for (let i = 0; i <= n - 5; i++) {
         let p = h.slice(i, i + 5).join('');
         if (p[0] === p[1] && p[3] === p[4] && p[1] !== p[2] && p[2] !== p[3] && p[1] === p[3]) {
-            return { p: p[4] === 'T' ? 0.58 : 0.42 };
+            return { p: p[4] === 'T' ? 0.58 : 0.42, name: 'Cầu kép' };
         }
     }
     let curS = 1;
     for (let i = 1; i < n; i++) { if (h[i] === h[i - 1]) curS++; else break; }
     if (curS >= 3) {
-        return { p: h[0] === 'T' ? 0.55 : 0.45 };
+        return { p: h[0] === 'T' ? 0.55 : 0.45, name: 'Cầu kép' };
     }
     return null;
 }
 
-// 23. Cầu phản xạ
 function cauPhanXa(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -630,10 +624,9 @@ function cauPhanXa(h) {
     }
     if (totalPX < 3) return null;
     let rate = matchPX / totalPX;
-    return { p: curV === 'T' ? 0.5 - rate * 0.2 : 0.5 + rate * 0.2 };
+    return { p: curV === 'T' ? 0.5 - rate * 0.2 : 0.5 + rate * 0.2, name: 'Cầu phản xạ' };
 }
 
-// 24. Cầu lỡ rơi
 function cauLoRoi(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -652,10 +645,9 @@ function cauLoRoi(h) {
     }
     if (totalR < 2) return null;
     let rate = matchR / totalR;
-    return { p: h[0] === 'T' ? 0.5 - rate * 0.18 : 0.5 + rate * 0.18 };
+    return { p: h[0] === 'T' ? 0.5 - rate * 0.18 : 0.5 + rate * 0.18, name: 'Cầu lỡ rơi' };
 }
 
-// 25. Cầu song hành
 function cauSongHanh(h) {
     let n = Math.min(h.length, 200);
     if (n < 12) return null;
@@ -672,13 +664,12 @@ function cauSongHanh(h) {
             if (pairs[i] === pairs[i - 1]) match++;
         }
     }
-    if (total < 2) return { p: 0.5 };
+    if (total < 2) return { p: 0.5, name: 'Cầu song hành' };
     let rate = match / total;
     let lastPair = pairs[pairs.length - 1];
-    return { p: lastPair === 'TT' || lastPair === 'XX' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12 };
+    return { p: lastPair === 'TT' || lastPair === 'XX' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12, name: 'Cầu song hành' };
 }
 
-// 26. Cầu giao nhau
 function cauGiaoNhau(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
@@ -695,10 +686,9 @@ function cauGiaoNhau(h) {
     }
     if (gnCount < 2) return null;
     let rate = matchGN / gnCount;
-    return { p: curV === 'T' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12 };
+    return { p: curV === 'T' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12, name: 'Cầu giao nhau' };
 }
 
-// 27. Cầu bet 12
 function cauBet12(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -717,10 +707,9 @@ function cauBet12(h) {
     }
     if (total < 2) return null;
     let rate = match / total;
-    return { p: curV === 'T' ? 0.5 + rate * 0.13 : 0.5 - rate * 0.13 };
+    return { p: curV === 'T' ? 0.5 + rate * 0.13 : 0.5 - rate * 0.13, name: 'Cầu bet 12' };
 }
 
-// 28. Cầu xiên 22
 function cauXien22(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
@@ -735,18 +724,17 @@ function cauXien22(h) {
     if (totalX < 2) return null;
     let rate = matchX / totalX;
     let last4 = h.slice(0, 4).join('');
-    if (!(last4[0] === last4[1] && last4[2] === last4[3] && last4[0] !== last4[2])) return { p: 0.5 };
-    return { p: h[0] === 'T' ? 0.5 + rate * 0.1 : 0.5 - rate * 0.1 };
+    if (!(last4[0] === last4[1] && last4[2] === last4[3] && last4[0] !== last4[2])) return { p: 0.5, name: 'Cầu xiên 22' };
+    return { p: h[0] === 'T' ? 0.5 + rate * 0.1 : 0.5 - rate * 0.1, name: 'Cầu xiên 22' };
 }
 
-// 29. Cầu 331
 function cau331(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
     for (let i = 0; i <= n - 9; i++) {
         let p = h.slice(i, i + 7).join('');
         if (p[0] === p[1] && p[1] === p[2] && p[3] === p[4] && p[4] === p[5] && p[2] !== p[3] && p[5] === p[6]) {
-            return { p: p[6] === 'T' ? 0.55 : 0.45 };
+            return { p: p[6] === 'T' ? 0.55 : 0.45, name: 'Cầu 331' };
         }
     }
     let curS = 1;
@@ -763,20 +751,19 @@ function cau331(h) {
         }
         if (total33 >= 2) {
             let r = match33 / total33;
-            return { p: h[0] === 'T' ? 0.5 + r * 0.12 : 0.5 - r * 0.12 };
+            return { p: h[0] === 'T' ? 0.5 + r * 0.12 : 0.5 - r * 0.12, name: 'Cầu 331' };
         }
     }
     return null;
 }
 
-// 30. Cầu 133
 function cau133(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
     for (let i = 0; i <= n - 9; i++) {
         let p = h.slice(i, i + 7).join('');
         if (p[0] === p[1] && p[2] === p[3] && p[3] === p[4] && p[4] === p[5] && p[0] !== p[2] && p[5] === p[6]) {
-            return { p: p[6] === 'T' ? 0.55 : 0.45 };
+            return { p: p[6] === 'T' ? 0.55 : 0.45, name: 'Cầu 133' };
         }
     }
     let curS = 1;
@@ -793,13 +780,12 @@ function cau133(h) {
         }
         if (total13 >= 2) {
             let r = match13 / total13;
-            return { p: h[0] === 'T' ? 0.5 + r * 0.15 : 0.5 - r * 0.15 };
+            return { p: h[0] === 'T' ? 0.5 + r * 0.15 : 0.5 - r * 0.15, name: 'Cầu 133' };
         }
     }
     return null;
 }
 
-// 31. Cầu nhảy cóc
 function cauNhayCoc(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
@@ -815,17 +801,16 @@ function cauNhayCoc(h) {
     }
     if (skipCount < 2) return null;
     let rate = matchSkip / skipCount;
-    return { p: curV === 'T' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12 };
+    return { p: curV === 'T' ? 0.5 + rate * 0.12 : 0.5 - rate * 0.12, name: 'Cầu nhảy cóc' };
 }
 
-// 32. Cầu 421
 function cau421(h) {
     let n = Math.min(h.length, 200);
     if (n < 12) return null;
     for (let i = 0; i <= n - 10; i++) {
         let p = h.slice(i, i + 7).join('');
         if (p[0] === p[1] && p[1] === p[2] && p[2] === p[3] && p[4] === p[5] && p[3] !== p[4] && p[5] === p[6]) {
-            return { p: p[6] === 'T' ? 0.54 : 0.46 };
+            return { p: p[6] === 'T' ? 0.54 : 0.46, name: 'Cầu 421' };
         }
     }
     let curS = 1;
@@ -842,13 +827,12 @@ function cau421(h) {
         }
         if (total >= 2) {
             let r = match / total;
-            return { p: h[0] === 'T' ? 0.5 + r * 0.12 : 0.5 - r * 0.12 };
+            return { p: h[0] === 'T' ? 0.5 + r * 0.12 : 0.5 - r * 0.12, name: 'Cầu 421' };
         }
     }
     return null;
 }
 
-// 33. Cầu đối xứng
 function cauDoiXung(h) {
     let n = Math.min(h.length, 200);
     if (n < 14) return null;
@@ -868,10 +852,9 @@ function cauDoiXung(h) {
     }
     if (symCount < 2) return null;
     let rate = matchSym / symCount;
-    return { p: rate > 0.55 ? 0.52 : 0.48 };
+    return { p: rate > 0.55 ? 0.52 : 0.48, name: 'Cầu đối xứng' };
 }
 
-// 34. Cầu xen kẽ
 function cauXenKe(h) {
     let n = Math.min(h.length, 200);
     if (n < 10) return null;
@@ -887,12 +870,11 @@ function cauXenKe(h) {
     let rate = matchXK / xkCount;
     let lastP = h.slice(0, 4).join('');
     if (!(lastP[0] !== lastP[1] && lastP[1] !== lastP[2] && lastP[2] !== lastP[3] && lastP[0] === lastP[2] && lastP[1] === lastP[3])) {
-        return { p: 0.48 };
+        return { p: 0.48, name: 'Cầu xen kẽ' };
     }
-    return { p: h[0] === 'T' ? 0.5 + rate * 0.1 : 0.5 - rate * 0.1 };
+    return { p: h[0] === 'T' ? 0.5 + rate * 0.1 : 0.5 - rate * 0.1, name: 'Cầu xen kẽ' };
 }
 
-// 35. Cầu thép
 function cauThep(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -909,10 +891,9 @@ function cauThep(h) {
     }
     if (tpCount < 2) return null;
     let rate = matchTP / tpCount;
-    return { p: curV === 'T' ? 0.5 + rate * 0.11 : 0.5 - rate * 0.11 };
+    return { p: curV === 'T' ? 0.5 + rate * 0.11 : 0.5 - rate * 0.11, name: 'Cầu thép' };
 }
 
-// 36. Cầu nhịp tăng
 function cauNhipTang(h) {
     let n = Math.min(h.length, 200);
     if (n < 12) return null;
@@ -933,7 +914,7 @@ function cauNhipTang(h) {
             let nextRun = runs[j + 4];
             if (nextRun) {
                 let match = nextRun.v === r0.v;
-                return { p: isUp ? (match ? 0.56 : 0.44) : (match ? 0.44 : 0.56) };
+                return { p: isUp ? (match ? 0.56 : 0.44) : (match ? 0.44 : 0.56), name: 'Cầu nhịp tăng' };
             }
         }
         if (r0.len > r1.len && r1.len > r2.len && r2.len > r3.len) {
@@ -941,14 +922,13 @@ function cauNhipTang(h) {
             let nextRun = runs[j + 4];
             if (nextRun) {
                 let match = nextRun.v !== r0.v;
-                return { p: isDown ? (match ? 0.56 : 0.44) : (match ? 0.44 : 0.56) };
+                return { p: isDown ? (match ? 0.56 : 0.44) : (match ? 0.44 : 0.56), name: 'Cầu nhịp tăng' };
             }
         }
     }
     return null;
 }
 
-// 37. Cầu 343
 function cau343(h) {
     let n = Math.min(h.length, 200);
     if (n < 12) return null;
@@ -956,13 +936,12 @@ function cau343(h) {
         let p = h.slice(i, i + 10).join('');
         if (p[0] === p[1] && p[1] === p[2] && p[3] === p[4] && p[4] === p[5] && p[6] === p[7] && p[7] === p[8] && p[8] === p[9] && p[2] !== p[3] && p[5] !== p[6]) {
             let pred = h[9] === 'T' ? 'X' : 'T';
-            return { p: pred === 'T' ? 0.56 : 0.44 };
+            return { p: pred === 'T' ? 0.56 : 0.44, name: 'Cầu 343' };
         }
     }
     return null;
 }
 
-// 38. Cầu xiên chéo
 function cauXienCheo(h) {
     let n = Math.min(h.length, 200);
     if (n < 8) return null;
@@ -976,147 +955,423 @@ function cauXienCheo(h) {
     }
     if (xcCount < 3) return null;
     let rate = matchXC / xcCount;
-    return { p: rate > 0.55 ? 0.52 : 0.48 };
+    return { p: rate > 0.55 ? 0.52 : 0.48, name: 'Cầu xiên chéo' };
+}
+
+// --- NHÓM 2: THUẬT TOÁN TỪ FILE MẪU ---
+
+function extractFeatures(history) {
+    const tx = history.map(h => h.tx === 'T' ? 't' : 'x');
+    const totals = history.map(h => h.total);
+    const freq = {};
+    for (const v of tx) freq[v] = (freq[v] || 0) + 1;
+    let runs = [], cur = tx[0], len = 1;
+    for (let i = 1; i < tx.length; i++) {
+        if (tx[i] === cur) len++;
+        else { runs.push({ val: cur, len }); cur = tx[i]; len = 1; }
+    }
+    if (tx.length) runs.push({ val: cur, len });
+    return { tx, totals, freq, runs, maxRun: runs.reduce((m, r) => Math.max(m, r.len), 0) };
+}
+
+function detectPatternType(runs) {
+    if (runs.length < 3) return null;
+    const lastRuns = runs.slice(-6);
+    const lengths = lastRuns.map(r => r.len);
+    const values = lastRuns.map(r => r.val);
+    if (lastRuns.length >= 3) {
+        if (lengths.every(l => l === 1) && values.every((v, i) => i === 0 || v !== values[i-1])) return '1_1_pattern';
+        if (lengths.every(l => l === 2) && values.every((v, i) => i === 0 || v !== values[i-1])) return '2_2_pattern';
+        if (lengths.every(l => l === 3) && values.every((v, i) => i === 0 || v !== values[i-1])) return '3_3_pattern';
+        if (lengths.length >= 5 && lengths[0]===2 && lengths[1]===1 && lengths[2]===2 && lengths[3]===1 && lengths[4]===2) return '2_1_2_pattern';
+        if (lengths.length >= 5 && lengths[0]===1 && lengths[1]===2 && lengths[2]===1 && lengths[3]===2 && lengths[4]===1) return '1_2_1_pattern';
+        if (lengths.length >= 5 && lengths[0]===3 && lengths[1]===2 && lengths[2]===3 && lengths[3]===2 && lengths[4]===3) return '3_2_3_pattern';
+        if (lengths.length >= 5 && lengths[0]===4 && lengths[1]===2 && lengths[2]===4 && lengths[3]===2 && lengths[4]===4) return '4_2_4_pattern';
+        if (lengths.length >= 5 && lengths[0]===2 && lengths[1]===2 && lengths[2]===1 && lengths[3]===2 && lengths[4]===2) return '2_2_1_pattern';
+        if (lengths.length >= 5 && lengths[0]===1 && lengths[1]===3 && lengths[2]===1 && lengths[3]===3 && lengths[4]===1) return '1_3_1_pattern';
+        if (lengths.length >= 5 && lengths[0]===3 && lengths[1]===1 && lengths[2]===3 && lengths[3]===1 && lengths[4]===3) return '3_1_3_pattern';
+    }
+    const lastRun = lastRuns[lastRuns.length - 1];
+    if (lastRun && lastRun.len >= 5) return 'long_run_pattern';
+    return null;
+}
+
+function predictFromPattern(patternType, runs, lastTx) {
+    if (!patternType) return null;
+    const lastRun = runs[runs.length - 1];
+    switch (patternType) {
+        case '1_1_pattern': return lastTx === 't' ? 'x' : 't';
+        case '2_2_pattern': return lastRun.len === 2 ? (lastRun.val === 't' ? 'x' : 't') : lastRun.val;
+        case '3_3_pattern': return lastRun.len === 3 ? (lastRun.val === 't' ? 'x' : 't') : lastRun.val;
+        case '2_1_2_pattern':
+            if (lastRun.len === 2) return lastRun.val === 't' ? 'x' : 't';
+            if (lastRun.len === 1) return lastRun.val;
+            return null;
+        case '1_2_1_pattern':
+            if (lastRun.len === 1) return lastRun.val === 't' ? 'x' : 't';
+            if (lastRun.len === 2) return lastRun.val;
+            return null;
+        case '3_2_3_pattern':
+        case '4_2_4_pattern':
+            if (lastRun.len >= 3) return lastRun.val === 't' ? 'x' : 't';
+            if (lastRun.len === 2) return lastRun.val;
+            return null;
+        case '2_2_1_pattern':
+            if (lastRun.len === 2) return lastRun.val === 't' ? 'x' : 't';
+            if (lastRun.len === 1) return lastRun.val === 't' ? 'x' : 't';
+            return null;
+        case '1_3_1_pattern':
+            if (lastRun.len === 1) return lastRun.val === 't' ? 'x' : 't';
+            if (lastRun.len === 3) return lastRun.val;
+            return null;
+        case '3_1_3_pattern':
+            if (lastRun.len === 3) return lastRun.val === 't' ? 'x' : 't';
+            if (lastRun.len === 1) return lastRun.val;
+            return null;
+        case 'long_run_pattern':
+            if (lastRun.len > 7) return lastRun.val === 't' ? 'x' : 't';
+            if (lastRun.len >= 4) return lastRun.val;
+            return null;
+        default: return null;
+    }
+}
+
+function detectStreak(vals) {
+  if (!vals.length) return { streak: 0, current: null, breakProb: 0 };
+  let streak = 1;
+  const current = vals[vals.length - 1];
+  for (let i = vals.length - 2; i >= 0; i--) {
+    if (vals[i] === current) streak++;
+    else break;
+  }
+  const last15 = vals.slice(-15);
+  let switches = 0;
+  for (let i = 1; i < last15.length; i++) {
+    if (last15[i] !== last15[i - 1]) switches++;
+  }
+  const tCount = last15.filter(v => v === 't').length;
+  const imbalance = Math.abs(tCount - (last15.length - tCount)) / last15.length;
+  let breakProb = 0;
+  if (streak >= 8) breakProb = Math.min(0.6 + (switches / 15) + imbalance * 0.15, 0.9);
+  else if (streak >= 5) breakProb = Math.min(0.35 + (switches / 10) + imbalance * 0.25, 0.85);
+  else if (streak >= 3 && switches >= 7) breakProb = 0.3;
+  return { streak, current, breakProb };
+}
+
+function ngramPredict(vals) {
+  const results = [];
+  for (let len = 2; len <= 5; len++) {
+    if (vals.length < len + 1) continue;
+    const pattern = vals.slice(-len).join('');
+    let tCount = 0, xCount = 0, total = 0;
+    for (let i = 0; i <= vals.length - len - 1; i++) {
+      const seg = vals.slice(i, i + len).join('');
+      if (seg === pattern) {
+        total++;
+        if (vals[i + len] === 't') tCount++;
+        else xCount++;
+      }
+    }
+    if (total >= 2) {
+      const prob = tCount / total;
+      results.push({
+        len,
+        prediction: prob > 0.5 ? 't' : 'x',
+        confidence: Math.abs(prob - 0.5) * 200,
+        samples: total,
+        ratio: tCount + '/' + xCount
+      });
+    }
+  }
+  results.sort(function(a, b) { return (b.len * b.samples) - (a.len * a.samples); });
+  return results[0] || null;
+}
+
+function weightedTrend(vals) {
+  const last15 = vals.slice(-15);
+  if (last15.length < 3) return null;
+  const weights = last15.map(function(_, i) { return Math.pow(1.15, i); });
+  var tW = 0, xW = 0, totalW = 0;
+  last15.forEach(function(v, i) {
+    totalW += weights[i];
+    if (v === 't') tW += weights[i]; else xW += weights[i];
+  });
+  var ratio = (tW - xW) / totalW;
+  return {
+    prediction: ratio > 0 ? 't' : 'x',
+    confidence: Math.abs(ratio) * 100
+  };
+}
+
+function meanDeviation(vals) {
+  var last12 = vals.slice(-12);
+  if (last12.length < 3) return null;
+  var tCount = last12.filter(function(v) { return v === 't'; }).length;
+  var deviation = Math.abs(tCount - (last12.length - tCount)) / last12.length;
+  if (deviation < 0.35) {
+    return { prediction: last12[last12.length - 1] === 'x' ? 't' : 'x', confidence: 55 + deviation * 30 };
+  }
+  return { prediction: tCount > last12.length - tCount ? 't' : 'x', confidence: 50 + deviation * 50 };
+}
+
+function detectCycle(vals) {
+  if (vals.length < 20) return null;
+  var values = vals.map(function(v) { return v === 't' ? 1 : -1; });
+  var n = values.length;
+  var bestPeriod = 0, bestCorrelation = -1;
+  for (var period = 2; period <= Math.floor(n / 3); period++) {
+    var correlation = 0, count = 0;
+    for (var i = 0; i < n - period; i++) {
+      correlation += values[i] * values[i + period];
+      count++;
+    }
+    correlation /= count;
+    if (correlation > bestCorrelation) {
+      bestCorrelation = correlation;
+      bestPeriod = period;
+    }
+  }
+  if (bestCorrelation < 0.2) return null;
+  var position = vals.length % bestPeriod;
+  var cycleResults = [];
+  for (var j = position; j < vals.length; j += bestPeriod) {
+    cycleResults.push(vals[j]);
+  }
+  var tCount2 = cycleResults.filter(function(r) { return r === 't'; }).length;
+  return {
+    period: bestPeriod,
+    correlation: bestCorrelation,
+    prediction: tCount2 > cycleResults.length / 2 ? 't' : 'x',
+    confidence: Math.abs(tCount2 / cycleResults.length - 0.5) * 200
+  };
+}
+
+function markovPredict(vals) {
+  var orders = [3, 2, 1];
+  for (var oi = 0; oi < orders.length; oi++) {
+    var order = orders[oi];
+    if (vals.length <= order) continue;
+    var table = {};
+    for (var i = 0; i <= vals.length - order - 1; i++) {
+      var key = vals.slice(i, i + order).join('\u2192');
+      var next = vals[i + order];
+      if (!table[key]) table[key] = { t: 0, x: 0 };
+      table[key][next]++;
+    }
+    var state = vals.slice(-order).join('\u2192');
+    var cnt = table[state];
+    if (!cnt) continue;
+    var total = cnt.t + cnt.x;
+    if (total < 3) continue;
+    return {
+      prediction: cnt.t >= cnt.x ? 't' : 'x',
+      confidence: Math.round(Math.max(cnt.t, cnt.x) / total * 100),
+      order: order,
+      samples: total
+    };
+  }
+  return null;
+}
+
+function fibonacciMomentum(vals) {
+  if (vals.length < 10) return null;
+  var fib = [1, 1, 2, 3, 5, 8, 13, 21];
+  var tScore = 0, xScore = 0;
+  for (var i = 0; i < Math.min(fib.length, vals.length); i++) {
+    var idx = vals.length - 1 - i;
+    if (vals[idx] === 't') tScore += fib[i];
+    else xScore += fib[i];
+  }
+  var total = tScore + xScore;
+  return {
+    prediction: tScore > xScore ? 't' : 'x',
+    confidence: Math.abs(tScore - xScore) / total * 100
+  };
+}
+
+function smartBridgeBreak(vals) {
+  if (vals.length < 3) return null;
+  var si = detectStreak(vals);
+  var streak = si.streak, current = si.current, breakProb = si.breakProb;
+  if (streak < 3) return null;
+  var last20 = vals.slice(-20);
+  var pCounts = {};
+  for (var i = 0; i <= last20.length - 3; i++) {
+    var p = last20.slice(i, i + 3).join(',');
+    pCounts[p] = (pCounts[p] || 0) + 1;
+  }
+  var entries = Object.entries(pCounts).sort(function(a, b) { return b[1] - a[1]; });
+  var mc = entries[0];
+  var isStable = mc && mc[1] >= 3;
+  var breakProbability = breakProb;
+  if (streak >= 6) breakProbability = Math.min(breakProbability + 0.15, 0.9);
+  else if (streak >= 4) breakProbability = Math.min(breakProbability + 0.1, 0.85);
+  else breakProbability = Math.max(breakProbability - 0.15, 0.15);
+  var prediction = breakProbability > 0.65
+    ? (current === 't' ? 'x' : 't')
+    : (current === 't' ? 't' : 'x');
+  return { prediction: prediction, confidence: breakProbability * 100, streak: streak, breakProb: breakProbability };
+}
+
+function patternDBLookup(vals) {
+  if (vals.length < 3) return null;
+  var keys = Object.keys(PATTERN_DB).sort(function(a, b) { return b.length - a.length; });
+  var currentStr = vals.slice(0, 15).join('');
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (currentStr.endsWith(key)) {
+      var data = PATTERN_DB[key];
+      return { prediction: data.t > data.x ? 't' : 'x', confidence: Math.max(data.t, data.x), pattern: key };
+    }
+  }
+  return null;
+}
+
+function detectSpecialPatterns(vals) {
+  if (vals.length < 4) return null;
+  var last4 = vals.slice(-4);
+  if (last4[0] === last4[1] && last4[2] === last4[3] && last4[1] !== last4[2]) {
+    return { prediction: last4[3] === 't' ? 't' : 'x', confidence: 62, pattern: 'AABB' };
+  }
+  if (vals.length >= 6) {
+    var alternating = true;
+    for (var i = vals.length - 6; i < vals.length; i++) {
+      if (i > vals.length - 6 && vals[i] === vals[i - 1]) { alternating = false; break; }
+    }
+    if (alternating) return { prediction: vals[vals.length - 1] === 't' ? 'x' : 't', confidence: 65, pattern: '1-1' };
+  }
+  if (vals.length >= 5) {
+    var m = vals.slice(-5);
+    if (m[0] === m[1] && m[1] !== m[2] && m[3] === m[4] && m[0] === m[3]) {
+      return { prediction: m[2], confidence: 62, pattern: '2-1' };
+    }
+  }
+  return null;
 }
 
 // ============================================================
-// THUẬT TOÁN DỰ ĐOÁN TỔNG HỢP VIP
+// THUẬT TOÁN DỰ ĐOÁN TỔNG HỢP SUPER VIP
 // ============================================================
 
 function smartPredict(h) {
     let n = Math.min(h.length, 200);
     if (n < 3) return 0.5;
     
-    // Thu thập tất cả các cầu
     let signals = [];
     
-    // Danh sách 38 cầu
-    let c11 = cau11(h);
-    if (c11) signals.push({ p: c11.p, weight: 1.0, name: 'Cầu 11' });
+    // Nhóm 1: Cầu cơ bản (38 cầu)
+    let c11 = cau11(h); if (c11) signals.push({ p: c11.p, weight: 1.0, name: c11.name });
+    let c3n = cau3Nhip(h); if (c3n) signals.push({ p: c3n.p, weight: 0.9, name: c3n.name });
+    let cDao = cauDao(h); if (cDao) signals.push({ p: cDao.p, weight: 0.95, name: cDao.name });
+    let cTong = cauTong(h); if (cTong) signals.push({ p: cTong.p, weight: 0.85, name: cTong.name });
+    let cRong = cauRongHo(h); if (cRong) signals.push({ p: cRong.p, weight: 0.9, name: cRong.name });
+    let c12 = cau12(h); if (c12) signals.push({ p: c12.p, weight: 0.8, name: c12.name });
+    let c212 = cau212(h); if (c212) signals.push({ p: c212.p, weight: 0.85, name: c212.name });
+    let c33 = cau33(h); if (c33) signals.push({ p: c33.p, weight: 0.9, name: c33.name });
+    let c42 = cau42(h); if (c42) signals.push({ p: c42.p, weight: 0.85, name: c42.name });
+    let cDao1122 = cauDao1122(h); if (cDao1122) signals.push({ p: cDao1122.p, weight: 0.8, name: cDao1122.name });
+    let cGay = cauGay(h); if (cGay) signals.push({ p: cGay.p, weight: 0.7, name: cGay.name });
+    let cThong = cauThong(h); if (cThong) signals.push({ p: cThong.p, weight: 0.85, name: cThong.name });
+    let c2Nhip = cau2Nhip(h); if (c2Nhip) signals.push({ p: c2Nhip.p, weight: 0.75, name: c2Nhip.name });
+    let c4Nhip = cau4Nhip(h); if (c4Nhip) signals.push({ p: c4Nhip.p, weight: 0.7, name: c4Nhip.name });
+    let c3_2 = cau3_2(h); if (c3_2) signals.push({ p: c3_2.p, weight: 0.8, name: c3_2.name });
+    let c1_2_3 = cau1_2_3(h); if (c1_2_3) signals.push({ p: c1_2_3.p, weight: 0.75, name: c1_2_3.name });
+    let cBac = cauBac(h); if (cBac) signals.push({ p: cBac.p, weight: 0.7, name: cBac.name });
+    let c112 = cau112(h); if (c112) signals.push({ p: c112.p, weight: 0.7, name: c112.name });
+    let c221 = cau221(h); if (c221) signals.push({ p: c221.p, weight: 0.7, name: c221.name });
+    let cDao22 = cauDao22(h); if (cDao22) signals.push({ p: cDao22.p, weight: 0.75, name: cDao22.name });
+    let cCham = cauCham(h); if (cCham) signals.push({ p: cCham.p, weight: 0.7, name: cCham.name });
+    let cKep = cauKep(h); if (cKep) signals.push({ p: cKep.p, weight: 0.75, name: cKep.name });
+    let cPhanXa = cauPhanXa(h); if (cPhanXa) signals.push({ p: cPhanXa.p, weight: 0.7, name: cPhanXa.name });
+    let cLoRoi = cauLoRoi(h); if (cLoRoi) signals.push({ p: cLoRoi.p, weight: 0.7, name: cLoRoi.name });
+    let cSongHanh = cauSongHanh(h); if (cSongHanh) signals.push({ p: cSongHanh.p, weight: 0.65, name: cSongHanh.name });
+    let cGiaoNhau = cauGiaoNhau(h); if (cGiaoNhau) signals.push({ p: cGiaoNhau.p, weight: 0.7, name: cGiaoNhau.name });
+    let cBet12 = cauBet12(h); if (cBet12) signals.push({ p: cBet12.p, weight: 0.7, name: cBet12.name });
+    let cXien22 = cauXien22(h); if (cXien22) signals.push({ p: cXien22.p, weight: 0.65, name: cXien22.name });
+    let c331 = cau331(h); if (c331) signals.push({ p: c331.p, weight: 0.7, name: c331.name });
+    let c133 = cau133(h); if (c133) signals.push({ p: c133.p, weight: 0.7, name: c133.name });
+    let cNhayCoc = cauNhayCoc(h); if (cNhayCoc) signals.push({ p: cNhayCoc.p, weight: 0.65, name: cNhayCoc.name });
+    let c421 = cau421(h); if (c421) signals.push({ p: c421.p, weight: 0.7, name: c421.name });
+    let cDoiXung = cauDoiXung(h); if (cDoiXung) signals.push({ p: cDoiXung.p, weight: 0.65, name: cDoiXung.name });
+    let cXenKe = cauXenKe(h); if (cXenKe) signals.push({ p: cXenKe.p, weight: 0.65, name: cXenKe.name });
+    let cThep = cauThep(h); if (cThep) signals.push({ p: cThep.p, weight: 0.7, name: cThep.name });
+    let cNhipTang = cauNhipTang(h); if (cNhipTang) signals.push({ p: cNhipTang.p, weight: 0.7, name: cNhipTang.name });
+    let c343 = cau343(h); if (c343) signals.push({ p: c343.p, weight: 0.7, name: c343.name });
+    let cXienCheo = cauXienCheo(h); if (cXienCheo) signals.push({ p: cXienCheo.p, weight: 0.6, name: cXienCheo.name });
     
-    let c3n = cau3Nhip(h);
-    if (c3n) signals.push({ p: c3n.p, weight: 0.9, name: 'Cầu 3 nhịp' });
+    // Nhóm 2: Thuật toán từ file mẫu
+    let vals = h.map(v => v === 'T' ? 't' : 'x');
+    let features = extractFeatures(h.map(v => ({ tx: v, total: 0 })));
+    let patternType = detectPatternType(features.runs);
+    if (patternType) {
+        let patPred = predictFromPattern(patternType, features.runs, vals[0]);
+        if (patPred) {
+            let patP = patPred === 't' ? 0.6 : 0.4;
+            signals.push({ p: patP, weight: 0.9, name: 'Pattern Type: ' + patternType });
+        }
+    }
     
-    let cDao = cauDao(h);
-    if (cDao) signals.push({ p: cDao.p, weight: 0.95, name: 'Cầu đảo' });
+    let ng = ngramPredict(vals);
+    if (ng) {
+        let ngP = ng.prediction === 't' ? 0.5 + ng.confidence / 200 : 0.5 - ng.confidence / 200;
+        signals.push({ p: ngP, weight: 0.85, name: 'N-gram (len=' + ng.len + ')' });
+    }
     
-    let cTong = cauTong(h);
-    if (cTong) signals.push({ p: cTong.p, weight: 0.85, name: 'Cầu tổng' });
+    let wt = weightedTrend(vals);
+    if (wt) {
+        let wtP = wt.prediction === 't' ? 0.5 + wt.confidence / 200 : 0.5 - wt.confidence / 200;
+        signals.push({ p: wtP, weight: 0.8, name: 'Weighted Trend' });
+    }
     
-    let cRong = cauRongHo(h);
-    if (cRong) signals.push({ p: cRong.p, weight: 0.9, name: 'Cầu rồng hổ' });
+    let md = meanDeviation(vals);
+    if (md) {
+        let mdP = md.prediction === 't' ? 0.5 + md.confidence / 200 : 0.5 - md.confidence / 200;
+        signals.push({ p: mdP, weight: 0.75, name: 'Mean Deviation' });
+    }
     
-    let c12 = cau12(h);
-    if (c12) signals.push({ p: c12.p, weight: 0.8, name: 'Cầu 12' });
+    let cy = detectCycle(vals);
+    if (cy) {
+        let cyP = cy.prediction === 't' ? 0.5 + cy.confidence / 200 : 0.5 - cy.confidence / 200;
+        signals.push({ p: cyP, weight: 0.85, name: 'Cycle (period=' + cy.period + ')' });
+    }
     
-    let c212 = cau212(h);
-    if (c212) signals.push({ p: c212.p, weight: 0.85, name: 'Cầu 212' });
+    let mk = markovPredict(vals);
+    if (mk) {
+        let mkP = mk.prediction === 't' ? mk.confidence / 100 : 1 - mk.confidence / 100;
+        signals.push({ p: mkP, weight: 0.8, name: 'Markov (order=' + mk.order + ')' });
+    }
     
-    let c33 = cau33(h);
-    if (c33) signals.push({ p: c33.p, weight: 0.9, name: 'Cầu 33' });
+    let fm = fibonacciMomentum(vals);
+    if (fm) {
+        let fmP = fm.prediction === 't' ? 0.5 + fm.confidence / 200 : 0.5 - fm.confidence / 200;
+        signals.push({ p: fmP, weight: 0.75, name: 'Fibonacci Momentum' });
+    }
     
-    let c42 = cau42(h);
-    if (c42) signals.push({ p: c42.p, weight: 0.85, name: 'Cầu 42' });
+    let sbb = smartBridgeBreak(vals);
+    if (sbb) {
+        let sbbP = sbb.prediction === 't' ? sbb.confidence / 100 : 1 - sbb.confidence / 100;
+        signals.push({ p: sbbP, weight: 0.85, name: 'Smart Bridge Break' });
+    }
     
-    let cDao1122 = cauDao1122(h);
-    if (cDao1122) signals.push({ p: cDao1122.p, weight: 0.8, name: 'Cầu đảo 1122' });
+    let pdb = patternDBLookup(vals);
+    if (pdb) {
+        let pdbP = pdb.prediction === 't' ? pdb.confidence / 100 : 1 - pdb.confidence / 100;
+        signals.push({ p: pdbP, weight: 0.9, name: 'Pattern DB: ' + pdb.pattern });
+    }
     
-    let cGay = cauGay(h);
-    if (cGay !== 0.5) signals.push({ p: cGay, weight: 0.7, name: 'Cầu gãy' });
+    let dsp = detectSpecialPatterns(vals);
+    if (dsp) {
+        let dspP = dsp.prediction === 't' ? dsp.confidence / 100 : 1 - dsp.confidence / 100;
+        signals.push({ p: dspP, weight: 0.8, name: 'Special Pattern: ' + dsp.pattern });
+    }
     
-    let cThong = cauThong(h);
-    if (cThong) signals.push({ p: cThong.p, weight: 0.85, name: 'Cầu thông' });
-    
-    let c2Nhip = cau2Nhip(h);
-    if (c2Nhip) signals.push({ p: c2Nhip.p, weight: 0.75, name: 'Cầu 2 nhịp' });
-    
-    let c4Nhip = cau4Nhip(h);
-    if (c4Nhip) signals.push({ p: c4Nhip.p, weight: 0.7, name: 'Cầu 4 nhịp' });
-    
-    let c3_2 = cau3_2(h);
-    if (c3_2) signals.push({ p: c3_2.p, weight: 0.8, name: 'Cầu 3_2' });
-    
-    let c1_2_3 = cau1_2_3(h);
-    if (c1_2_3) signals.push({ p: c1_2_3.p, weight: 0.75, name: 'Cầu 1_2_3' });
-    
-    let cBac = cauBac(h);
-    if (cBac) signals.push({ p: cBac.p, weight: 0.7, name: 'Cầu bậc' });
-    
-    let c112 = cau112(h);
-    if (c112) signals.push({ p: c112.p, weight: 0.7, name: 'Cầu 112' });
-    
-    let c221 = cau221(h);
-    if (c221) signals.push({ p: c221.p, weight: 0.7, name: 'Cầu 221' });
-    
-    let cDao22 = cauDao22(h);
-    if (cDao22) signals.push({ p: cDao22.p, weight: 0.75, name: 'Cầu đảo 22' });
-    
-    let cCham = cauCham(h);
-    if (cCham) signals.push({ p: cCham.p, weight: 0.7, name: 'Cầu chạm' });
-    
-    let cKep = cauKep(h);
-    if (cKep) signals.push({ p: cKep.p, weight: 0.75, name: 'Cầu kép' });
-    
-    let cPhanXa = cauPhanXa(h);
-    if (cPhanXa) signals.push({ p: cPhanXa.p, weight: 0.7, name: 'Cầu phản xạ' });
-    
-    let cLoRoi = cauLoRoi(h);
-    if (cLoRoi) signals.push({ p: cLoRoi.p, weight: 0.7, name: 'Cầu lỡ rơi' });
-    
-    let cSongHanh = cauSongHanh(h);
-    if (cSongHanh) signals.push({ p: cSongHanh.p, weight: 0.65, name: 'Cầu song hành' });
-    
-    let cGiaoNhau = cauGiaoNhau(h);
-    if (cGiaoNhau) signals.push({ p: cGiaoNhau.p, weight: 0.7, name: 'Cầu giao nhau' });
-    
-    let cBet12 = cauBet12(h);
-    if (cBet12) signals.push({ p: cBet12.p, weight: 0.7, name: 'Cầu bet 12' });
-    
-    let cXien22 = cauXien22(h);
-    if (cXien22) signals.push({ p: cXien22.p, weight: 0.65, name: 'Cầu xiên 22' });
-    
-    let c331 = cau331(h);
-    if (c331) signals.push({ p: c331.p, weight: 0.7, name: 'Cầu 331' });
-    
-    let c133 = cau133(h);
-    if (c133) signals.push({ p: c133.p, weight: 0.7, name: 'Cầu 133' });
-    
-    let cNhayCoc = cauNhayCoc(h);
-    if (cNhayCoc) signals.push({ p: cNhayCoc.p, weight: 0.65, name: 'Cầu nhảy cóc' });
-    
-    let c421 = cau421(h);
-    if (c421) signals.push({ p: c421.p, weight: 0.7, name: 'Cầu 421' });
-    
-    let cDoiXung = cauDoiXung(h);
-    if (cDoiXung) signals.push({ p: cDoiXung.p, weight: 0.65, name: 'Cầu đối xứng' });
-    
-    let cXenKe = cauXenKe(h);
-    if (cXenKe) signals.push({ p: cXenKe.p, weight: 0.65, name: 'Cầu xen kẽ' });
-    
-    let cThep = cauThep(h);
-    if (cThep) signals.push({ p: cThep.p, weight: 0.7, name: 'Cầu thép' });
-    
-    let cNhipTang = cauNhipTang(h);
-    if (cNhipTang) signals.push({ p: cNhipTang.p, weight: 0.7, name: 'Cầu nhịp tăng' });
-    
-    let c343 = cau343(h);
-    if (c343) signals.push({ p: c343.p, weight: 0.7, name: 'Cầu 343' });
-    
-    let cXienCheo = cauXienCheo(h);
-    if (cXienCheo) signals.push({ p: cXienCheo.p, weight: 0.6, name: 'Cầu xiên chéo' });
-    
-    // Nếu không có tín hiệu cầu, dùng phương pháp đảo chiều cơ bản
+    // Nếu không có tín hiệu, dùng phương pháp đảo chiều cơ bản
     if (signals.length === 0) {
         let s = streak(h);
         let curV = h[0];
-        if (s >= 4) {
-            return curV === 'T' ? 0.19 : 0.81;
-        } else if (s >= 3) {
-            return curV === 'T' ? 0.28 : 0.72;
-        } else {
-            let tC = countIn(h, 'T', n);
-            return tC / n;
-        }
+        if (s >= 4) return curV === 'T' ? 0.19 : 0.81;
+        else if (s >= 3) return curV === 'T' ? 0.28 : 0.72;
+        else return countIn(h, 'T', n) / n;
     }
     
     // Tính trọng số tổng hợp
@@ -1124,7 +1379,6 @@ function smartPredict(h) {
     let weightedSum = 0;
     
     for (let signal of signals) {
-        // Tăng trọng số cho các tín hiệu mạnh
         let strength = Math.abs(signal.p - 0.5) * 2;
         let finalWeight = signal.weight * (0.5 + strength);
         weightedSum += signal.p * finalWeight;
@@ -1148,7 +1402,7 @@ function smartPredict(h) {
 }
 
 // ============================================================
-// HÀM CHÍNH DỰ ĐOÁN VIP
+// HÀM CHÍNH DỰ ĐOÁN SUPER VIP
 // ============================================================
 
 function computePrediction(h) {
@@ -1156,18 +1410,13 @@ function computePrediction(h) {
     let n = d.length;
     if (n < 3) return { prediction: 'X', confidence: 50, streak: 0, prob: 0.5 };
     
-    // Lấy dự đoán từ SMART VIP
     let p = smartPredict(d);
-    
-    // Phân tích chuỗi hiện tại
     let s = streak(d);
     let curV = d[0];
     
-    // Quyết định cuối cùng
     let finalDecision = p >= 0.5 ? 'T' : 'X';
     let confidence = Math.min(99, Math.max(55, Math.round(Math.abs(p - 0.5) * 200) + 10));
     
-    // Nếu confidence thấp, ưu tiên dự đoán đảo chiều nếu có chuỗi dài
     if (confidence < 65 && s >= 3) {
         finalDecision = curV === 'T' ? 'X' : 'T';
         confidence = Math.min(88, confidence + 20);
@@ -1187,21 +1436,16 @@ function computePrediction(h) {
 
 async function handlePrediction(api, gameName) {
     let data = await fetchData(api);
-    if (!data) {
-        return { error: "Khong the lay du lieu tu API" };
-    }
+    if (!data) return { error: "Khong the lay du lieu tu API" };
     
     let parsed = parseData(data);
-    if (!parsed.length) {
-        return { error: "Du lieu khong hop le" };
-    }
+    if (!parsed.length) return { error: "Du lieu khong hop le" };
     
     let h = parsed.map(r => r.tx);
     let result = computePrediction(h);
     let latest = parsed[parsed.length - 1];
     let nextSession = latest ? latest.session + 1 : 1;
     
-    // Đếm tổng T/X từ dữ liệu
     let totalT = countIn(h, 'T', h.length);
     let totalX = h.length - totalT;
     let totalDice = h.length;
@@ -1231,14 +1475,10 @@ async function handlePrediction(api, gameName) {
 
 async function handleHistory(api, limit = 50) {
     let data = await fetchData(api);
-    if (!data) {
-        return { error: "Khong the lay du lieu tu API" };
-    }
+    if (!data) return { error: "Khong the lay du lieu tu API" };
     
     let parsed = parseData(data);
-    if (!parsed.length) {
-        return { error: "Du lieu khong hop le" };
-    }
+    if (!parsed.length) return { error: "Du lieu khong hop le" };
     
     let history = parsed.slice(-Math.min(limit, parsed.length));
     history = history.reverse();
@@ -1263,45 +1503,37 @@ async function handleHistory(api, limit = 50) {
 
 app.get("/lc79/md5", async (request, reply) => {
     let result = await handlePrediction(API_MD5, "LC79 MD5");
-    if (result.error) {
-        return reply.status(503).send({ error: result.error });
-    }
+    if (result.error) return reply.status(503).send({ error: result.error });
     return result;
 });
 
 app.get("/lc79/hu", async (request, reply) => {
     let result = await handlePrediction(API_HU, "LC79 Hũ");
-    if (result.error) {
-        return reply.status(503).send({ error: result.error });
-    }
+    if (result.error) return reply.status(503).send({ error: result.error });
     return result;
 });
 
 app.get("/lc79/historymd5", async (request, reply) => {
     const limit = request.query.limit ? parseInt(request.query.limit) : 50;
     let result = await handleHistory(API_MD5, limit);
-    if (result.error) {
-        return reply.status(503).send({ error: result.error });
-    }
+    if (result.error) return reply.status(503).send({ error: result.error });
     return result;
 });
 
 app.get("/lc79/historyhu", async (request, reply) => {
     const limit = request.query.limit ? parseInt(request.query.limit) : 50;
     let result = await handleHistory(API_HU, limit);
-    if (result.error) {
-        return reply.status(503).send({ error: result.error });
-    }
+    if (result.error) return reply.status(503).send({ error: result.error });
     return result;
 });
 
 app.get("/", async () => {
     return {
         status: "active",
-        service: "LC79 Prediction API VIP",
+        service: "LC79 Prediction API SUPER VIP",
         author: "Duy Bảo",
-        version: "3.0",
-        description: "38 thuật toán bắt cầu siêu VIP",
+        version: "4.0",
+        description: "50+ thuật toán bắt cầu siêu VIP",
         endpoints: {
             md5_prediction: "/lc79/md5",
             hu_prediction: "/lc79/hu",
@@ -1319,14 +1551,13 @@ const start = async () => {
     try {
         await app.listen({ port: PORT, host: "0.0.0.0" });
         console.log(`🚀 Server running on port ${PORT}`);
-        console.log(`📊 LC79 Prediction API VIP - Author: Duy Bảo`);
-        console.log(`🎯 38 thuật toán bắt cầu siêu VIP`);
+        console.log(`📊 LC79 Prediction API SUPER VIP - Author: Duy Bảo`);
+        console.log(`🎯 50+ thuật toán bắt cầu siêu VIP`);
         console.log(`📍 Endpoints:`);
         console.log(`   - Dự đoán MD5: http://localhost:${PORT}/lc79/md5`);
         console.log(`   - Dự đoán Hũ: http://localhost:${PORT}/lc79/hu`);
         console.log(`   - Lịch sử MD5: http://localhost:${PORT}/lc79/historymd5`);
         console.log(`   - Lịch sử Hũ: http://localhost:${PORT}/lc79/historyhu`);
-        console.log(`✅ Đã nâng cấp lên 38 thuật toán bắt cầu VIP`);
     } catch (err) {
         console.error("❌ Error starting server:", err.message);
         process.exit(1);
